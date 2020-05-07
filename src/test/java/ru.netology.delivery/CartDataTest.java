@@ -105,16 +105,18 @@ class CartDataTest {
         cartData.setName(cartDataGenerator.nameGenerator());
         cartData.setPhoneNumber(cartDataGenerator.phoneGenerator());
         open("http://localhost:9999");
-        $("[placeholder='Город']").setValue("Москва");
+        $("[placeholder='Город']").setValue(cartData.getCity());
         $("[placeholder='Дата встречи']").sendKeys(chord(CONTROL, "a"), DELETE);
-        $("[placeholder='Дата встречи']").setValue("10.05.2020");
-        $("input[type='text'][name='name']").setValue("Иван Иванов");
-        $("input[type='tel'][name='phone']").setValue("+79810000000");
+        $("[placeholder='Дата встречи']").setValue(cartData.getDate());
+        $("input[type='text'][name='name']").setValue(cartData.getName());
+        $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
         $(".checkbox__text").click();
+        $("button.button").shouldHave(exactText("Запланировать")).click();
+        $(withText("Успешно!"));
         $("button.button").shouldHave(exactText("Запланировать")).click();
         $("div[data-test-id='replan-notification']").shouldBe(visible);
         $$(".button__content").find(exactText("Перепланировать")).click();
-        $(withText("Успешно!")).shouldBe(visible);
+        $(withText("Успешно!"));
     }
 
 }
