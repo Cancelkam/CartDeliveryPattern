@@ -112,7 +112,7 @@ class CartDataTest {
         $("input[type='tel'][name='phone']").setValue("+79810000000");
         $(".checkbox__text").click();
         $("button.button").click();
-        $(withText("Необходимо подтверждение"));
+        $(withText("Необходимо подтверждение")).waitUntil(visible,10000);
         $$("button[type='button']").find(exactText ("Перепланировать")).click();
         $(withText("Успешно!"));
 
