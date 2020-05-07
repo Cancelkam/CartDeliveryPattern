@@ -111,11 +111,10 @@ class CartDataTest {
         $("input[type='text'][name='name']").setValue("Иван Иванов");
         $("input[type='tel'][name='phone']").setValue("+79810000000");
         $(".checkbox__text").click();
-        $("button.button").shouldHave(text("Запланировать")).click();
+        $("button.button").shouldHave(exactText("Запланировать")).click();
         $(withText("Необходимо подтверждение")).shouldBe(visible).waitUntil(visible,10000);
-        $("button.button").shouldHave(text("Перепланировать")).click();
-        $(withText("Успешно!"));
-
+        $$(".button__content").find(exactText("Перепланировать")).click();
+        $(withText("Успешно!")).shouldBe(visible);
     }
 
 }
