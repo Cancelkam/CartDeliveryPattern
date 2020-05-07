@@ -27,8 +27,8 @@ class CartDataTest {
         $("input[type='text'][name='name']").setValue(cartData.getName());
         $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
         $(".checkbox__text").click();
-        $("button.button").click();
-        $(withText("Успешно!")).waitUntil(Condition.visible,15000);
+        $("button.button").shouldHave(text("Запланировать")).click();
+        $(withText("Успешно!")).shouldBe(visible).waitUntil(Condition.visible,15000);
     }
 
     @Test
@@ -44,7 +44,7 @@ class CartDataTest {
         $("input[type='text'][name='name']").setValue(cartData.getName());
         $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
         $(".checkbox__text").click();
-        $("button.button").click();
+        $("button.button").shouldHave(text("Запланировать")).click();
         $(withText("Заказ на выбранную дату невозможен"));
     }
 
@@ -61,7 +61,7 @@ class CartDataTest {
             $("input[type='text'][name='name']").setValue("Pyotr Petrov");
             $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
             $(".checkbox__text").click();
-            $("button.button").click();
+            $("button.button").shouldHave(text("Запланировать")).click();
             $(withText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
         }
 
@@ -78,7 +78,7 @@ class CartDataTest {
         $("input[type='text'][name='name']").setValue(cartData.getName());
         $("input[type='tel'][name='phone']").setValue("");
         $(".checkbox__text").click();
-        $("button.button").click();
+        $("button.button").shouldHave(text("Запланировать")).click();
         $(withText("Поле обязательно для заполнения"));
     }
 
@@ -94,7 +94,7 @@ class CartDataTest {
         $("[placeholder='Дата встречи']").setValue(cartData.getDate());
         $("input[type='text'][name='name']").setValue(cartData.getName());
         $("input[type='tel'][name='phone']").setValue("+79810000000");
-        $("button.button").click();
+        $("button.button").shouldHave(text("Запланировать")).click();
         $(withText("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
     }
 
@@ -111,9 +111,9 @@ class CartDataTest {
         $("input[type='text'][name='name']").setValue("Иван Иванов");
         $("input[type='tel'][name='phone']").setValue("+79810000000");
         $(".checkbox__text").click();
-        $("button.button").click();
-        $(withText("Необходимо подтверждение")).waitUntil(visible,10000);
-        $$("button[type='button']").find(exactText ("Перепланировать")).click();
+        $("button.button").shouldHave(text("Запланировать")).click();
+        $(withText("Необходимо подтверждение")).shouldBe(visible).waitUntil(visible,10000);
+        $("button.button").shouldHave(text("Перепланировать")).click();
         $(withText("Успешно!"));
 
     }
