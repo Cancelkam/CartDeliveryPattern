@@ -12,31 +12,37 @@ import java.util.Random;
 
 public class CartDataGenerator {
     public static String cityGenerator() {
-        String[] CityList = new String[] {"Санкт-Петербург", "Новосибирск", "Екатеринбург", "Нижний Новгород", "Ростов-на-Дону", "Пятигорск"};
+        String[] CityList = new String[] {"Санкт-Петербург", "Новосибирск", "Екатеринбург", "Нижний Новгород", "Ростов-на-Дону", "Севастополь"};
         Random random = new Random();
         int city = random.nextInt(CityList.length);
         return CityList[city];
     }
 
-    public static String dateFutureGenerator() {
+    public static String dateGenerator() {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Date date = new Date();
         Random random = new Random();
-        Instant dateInst = Instant.now().plus(random.nextInt(10), ChronoUnit.DAYS);
+        Instant dateInst = Instant.now().plus(3,ChronoUnit.DAYS).plus(random.nextInt(7), ChronoUnit.DAYS);
         return dateFormat.format(date.from(dateInst));
     }
 
-    public static String datePreviousGenerator() {
+    public static String wrongDateGenerator() {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Date date = new Date();
         Random random = new Random();
-        Instant dateInst = Instant.now().minus(5, ChronoUnit.DAYS);
+        Instant dateInst = Instant.now().minus(5, ChronoUnit.DAYS).plus(8,ChronoUnit.DAYS);
         return dateFormat.format(date.from(dateInst));
     }
 
     public static String nameGenerator() {
         Faker faker = new Faker(new Locale("ru"));
-        String name = faker.name().fullName();
+        String name = faker.name().firstName() + " " + faker.name().lastName();
+        return name;
+    }
+
+    public static String wrongNameGenerator() {
+        Faker faker = new Faker(new Locale("en"));
+        String name = faker.name().firstName() + " " + faker.name().lastName();
         return name;
     }
 

@@ -11,15 +11,9 @@ import static org.openqa.selenium.Keys.*;
 
 class CartDataTest {
 
-    CartDataGenerator cartDataGenerator = new CartDataGenerator();
-    CartData cartData = new CartData();
-
     @Test
     void shouldBeSuccessTest() {
-        cartData.setCity(cartDataGenerator.cityGenerator());
-        cartData.setDate(cartDataGenerator.dateFutureGenerator());
-        cartData.setName(cartDataGenerator.nameGenerator());
-        cartData.setPhoneNumber(cartDataGenerator.phoneGenerator());
+        CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.nameGenerator(), CartDataGenerator.phoneGenerator());
         open("http://localhost:9999");
         $("[placeholder='Город']").setValue(cartData.getCity());
         $("[placeholder='Дата встречи']").sendKeys(chord(CONTROL, "a"), DELETE);
@@ -32,11 +26,8 @@ class CartDataTest {
     }
 
     @Test
-    void shouldBePreviousDateTest() {
-        cartData.setCity(cartDataGenerator.cityGenerator());
-        cartData.setDate(cartDataGenerator.datePreviousGenerator());
-        cartData.setName(cartDataGenerator.nameGenerator());
-        cartData.setPhoneNumber(cartDataGenerator.phoneGenerator());
+    void shouldBeWrongDateTest() {
+        CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.wrongDateGenerator(), CartDataGenerator.nameGenerator(), CartDataGenerator.phoneGenerator());
         open("http://localhost:9999");
         $("[placeholder='Город']").setValue(cartData.getCity());
         $("[placeholder='Дата встречи']").sendKeys(chord(CONTROL, "a"), DELETE);
@@ -50,15 +41,12 @@ class CartDataTest {
 
         @Test
         void shouldBeWrongNameTest() {
-            cartData.setCity(cartDataGenerator.cityGenerator());
-            cartData.setDate(cartDataGenerator.dateFutureGenerator());
-            cartData.setName(cartDataGenerator.nameGenerator());
-            cartData.setPhoneNumber(cartDataGenerator.phoneGenerator());
+            CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.wrongNameGenerator(), CartDataGenerator.phoneGenerator());
             open("http://localhost:9999");
             $("[placeholder='Город']").setValue(cartData.getCity());
             $("[placeholder='Дата встречи']").sendKeys(chord(CONTROL, "a"), DELETE);
             $("[placeholder='Дата встречи']").setValue(cartData.getDate());
-            $("input[type='text'][name='name']").setValue("Pyotr Petrov");
+            $("input[type='text'][name='name']").setValue(cartData.getName());
             $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
             $(".checkbox__text").click();
             $("button.button").shouldHave(text("Запланировать")).click();
@@ -67,10 +55,7 @@ class CartDataTest {
 
     @Test
     void shouldBeWrongPhoneTest() {
-        cartData.setCity(cartDataGenerator.cityGenerator());
-        cartData.setDate(cartDataGenerator.dateFutureGenerator());
-        cartData.setName(cartDataGenerator.nameGenerator());
-        cartData.setPhoneNumber(cartDataGenerator.phoneGenerator());
+        CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.nameGenerator(), CartDataGenerator.phoneGenerator());
         open("http://localhost:9999");
         $("[placeholder='Город']").setValue(cartData.getCity());
         $("[placeholder='Дата встречи']").sendKeys(chord(CONTROL, "a"), DELETE);
@@ -84,10 +69,7 @@ class CartDataTest {
 
     @Test
     void shouldBeNoCheckboxTest() {
-        cartData.setCity(cartDataGenerator.cityGenerator());
-        cartData.setDate(cartDataGenerator.dateFutureGenerator());
-        cartData.setName(cartDataGenerator.nameGenerator());
-        cartData.setPhoneNumber(cartDataGenerator.phoneGenerator());
+        CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.nameGenerator(), CartDataGenerator.phoneGenerator());
         open("http://localhost:9999");
         $("[placeholder='Город']").setValue(cartData.getCity());
         $("[placeholder='Дата встречи']").sendKeys(chord(CONTROL, "a"), DELETE);
@@ -100,10 +82,7 @@ class CartDataTest {
 
     @Test
     void shouldBeSameDataTest() {
-        cartData.setCity(cartDataGenerator.cityGenerator());
-        cartData.setDate(cartDataGenerator.dateFutureGenerator());
-        cartData.setName(cartDataGenerator.nameGenerator());
-        cartData.setPhoneNumber(cartDataGenerator.phoneGenerator());
+        CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.nameGenerator(), CartDataGenerator.phoneGenerator());
         open("http://localhost:9999");
         $("[placeholder='Город']").setValue(cartData.getCity());
         $("[placeholder='Дата встречи']").sendKeys(chord(CONTROL, "a"), DELETE);
@@ -112,11 +91,10 @@ class CartDataTest {
         $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
         $(".checkbox__text").click();
         $("button.button").shouldHave(exactText("Запланировать")).click();
-        $(withText("Успешно!"));
+        $(withText("Успешно!")).shouldBe(visible);
         $("button.button").shouldHave(exactText("Запланировать")).click();
         $("div[data-test-id='replan-notification']").shouldBe(visible);
         $$(".button__content").find(exactText("Перепланировать")).click();
-        $(withText("Успешно!"));
+        $(withText("Успешно!")).shouldBe(visible);;
     }
-
 }
