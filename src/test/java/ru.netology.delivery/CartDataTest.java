@@ -64,7 +64,7 @@ class CartDataTest {
         $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
         $(".checkbox__text").click();
         $("button.button").shouldHave(text("Запланировать")).click();
-        $(".input_invalid").shouldHave(text("Поле обязательно для заполнения"));
+        $(".input_invalid").shouldHave(text("Телефон указан неверно."));
     }
 
     @Test

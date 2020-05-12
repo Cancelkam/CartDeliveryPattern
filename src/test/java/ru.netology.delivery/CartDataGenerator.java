@@ -54,7 +54,7 @@ public class CartDataGenerator {
 
     public static String wrongPhoneGenerator() {
         Faker faker = new Faker(new Locale("ru"));
-        String phone = faker.bothify(" ");
+        String phone = faker.letterify("qwerty");
         return phone;
     }
 }
