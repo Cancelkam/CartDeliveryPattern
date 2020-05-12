@@ -51,4 +51,10 @@ public class CartDataGenerator {
         String phone = faker.phoneNumber().phoneNumber();
         return phone;
     }
+
+    public static String wrongPhoneGenerator() {
+        Faker faker = new Faker(new Locale("ru"));
+        String phone = faker.bothify(" ");
+        return phone;
+    }
 }

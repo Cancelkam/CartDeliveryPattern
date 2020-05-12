@@ -1,6 +1,5 @@
 package ru.netology.delivery;
 
-import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.*;
@@ -56,13 +55,13 @@ class CartDataTest {
 
     @Test
     void shouldGetErrorNotificationIfSendWrongPhone() {
-        CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.nameGenerator(), CartDataGenerator.phoneGenerator());
+        CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.nameGenerator(), CartDataGenerator.wrongPhoneGenerator());
         open("http://localhost:9999");
         $("[placeholder='Город']").setValue(cartData.getCity());
         $("[placeholder='Дата встречи']").sendKeys(chord(CONTROL, "a"), DELETE);
         $("[placeholder='Дата встречи']").setValue(cartData.getDate());
         $("input[type='text'][name='name']").setValue(cartData.getName());
-        $("input[type='tel'][name='phone']").setValue("");
+        $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
         $(".checkbox__text").click();
         $("button.button").shouldHave(text("Запланировать")).click();
         $(".input_invalid").shouldHave(text("Поле обязательно для заполнения"));
@@ -76,7 +75,7 @@ class CartDataTest {
         $("[placeholder='Дата встречи']").sendKeys(chord(CONTROL, "a"), DELETE);
         $("[placeholder='Дата встречи']").setValue(cartData.getDate());
         $("input[type='text'][name='name']").setValue(cartData.getName());
-        $("input[type='tel'][name='phone']").setValue("+79810000000");
+        $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
         $("button.button").shouldHave(text("Запланировать")).click();
         $(".input_invalid").shouldHave(text("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
     }
@@ -96,6 +95,6 @@ class CartDataTest {
         $("button.button").shouldHave(exactText("Запланировать")).click();
         $("div[data-test-id='replan-notification']").shouldBe(visible);
         $$(".button__content").find(exactText("Перепланировать")).click();
-        $(withText("Успешно!")).shouldBe(visible);;
+        $(withText("Успешно!")).shouldBe(visible);
     }
 }
