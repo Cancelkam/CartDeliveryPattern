@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$;
@@ -22,11 +23,11 @@ class CartDataTest {
         $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
         $(".checkbox__text").click();
         $("button.button").shouldHave(text("Запланировать")).click();
-        $(withText("Успешно!")).shouldBe(visible).waitUntil(Condition.visible,15000);
+        $(withText("Успешно!")).shouldBe(visible);
     }
 
     @Test
-    void shouldBeWrongDateTest() {
+    void shouldGetErrorNotificationIfSendPreviousOr3daysFuture() {
         CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.wrongDateGenerator(), CartDataGenerator.nameGenerator(), CartDataGenerator.phoneGenerator());
         open("http://localhost:9999");
         $("[placeholder='Город']").setValue(cartData.getCity());
@@ -36,25 +37,25 @@ class CartDataTest {
         $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
         $(".checkbox__text").click();
         $("button.button").shouldHave(text("Запланировать")).click();
-        $(withText("Заказ на выбранную дату невозможен"));
+        $(".input_invalid").shouldHave(text("Заказ на выбранную дату невозможен"));
     }
 
-        @Test
-        void shouldBeWrongNameTest() {
-            CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.wrongNameGenerator(), CartDataGenerator.phoneGenerator());
-            open("http://localhost:9999");
-            $("[placeholder='Город']").setValue(cartData.getCity());
-            $("[placeholder='Дата встречи']").sendKeys(chord(CONTROL, "a"), DELETE);
-            $("[placeholder='Дата встречи']").setValue(cartData.getDate());
-            $("input[type='text'][name='name']").setValue(cartData.getName());
-            $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
-            $(".checkbox__text").click();
-            $("button.button").shouldHave(text("Запланировать")).click();
-            $(withText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+    @Test
+    void shouldGetErrorNotificationIfSendWrongName() {
+        CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.wrongNameGenerator(), CartDataGenerator.phoneGenerator());
+        open("http://localhost:9999");
+        $("[placeholder='Город']").setValue(cartData.getCity());
+        $("[placeholder='Дата встречи']").sendKeys(chord(CONTROL, "a"), DELETE);
+        $("[placeholder='Дата встречи']").setValue(cartData.getDate());
+        $("input[type='text'][name='name']").setValue(cartData.getName());
+        $("input[type='tel'][name='phone']").setValue(cartData.getPhoneNumber());
+        $(".checkbox__text").click();
+        $("button.button").shouldHave(text("Запланировать")).click();
+        $(".input_invalid").shouldHave(text("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
         }
 
     @Test
-    void shouldBeWrongPhoneTest() {
+    void shouldGetErrorNotificationIfSendWrongPhone() {
         CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.nameGenerator(), CartDataGenerator.phoneGenerator());
         open("http://localhost:9999");
         $("[placeholder='Город']").setValue(cartData.getCity());
@@ -64,11 +65,11 @@ class CartDataTest {
         $("input[type='tel'][name='phone']").setValue("");
         $(".checkbox__text").click();
         $("button.button").shouldHave(text("Запланировать")).click();
-        $(withText("Поле обязательно для заполнения"));
+        $(".input_invalid").shouldHave(text("Поле обязательно для заполнения"));
     }
 
     @Test
-    void shouldBeNoCheckboxTest() {
+    void shouldGetErrorNotificationIfNoCheckbox() {
         CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.nameGenerator(), CartDataGenerator.phoneGenerator());
         open("http://localhost:9999");
         $("[placeholder='Город']").setValue(cartData.getCity());
@@ -77,11 +78,11 @@ class CartDataTest {
         $("input[type='text'][name='name']").setValue(cartData.getName());
         $("input[type='tel'][name='phone']").setValue("+79810000000");
         $("button.button").shouldHave(text("Запланировать")).click();
-        $(withText("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
+        $(".input_invalid").shouldHave(text("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
     }
 
     @Test
-    void shouldBeSameDataTest() {
+    void shouldSuccessSendFormIfPlanAndReplanMeeting() {
         CartData cartData = new CartData(CartDataGenerator.cityGenerator(), CartDataGenerator.dateGenerator(), CartDataGenerator.nameGenerator(), CartDataGenerator.phoneGenerator());
         open("http://localhost:9999");
         $("[placeholder='Город']").setValue(cartData.getCity());

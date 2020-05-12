@@ -30,7 +30,7 @@ public class CartDataGenerator {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Date date = new Date();
         Random random = new Random();
-        Instant dateInst = Instant.now().minus(5, ChronoUnit.DAYS).plus(8,ChronoUnit.DAYS);
+        Instant dateInst = Instant.now().plus(random.nextInt(2),ChronoUnit.DAYS);
         return dateFormat.format(date.from(dateInst));
     }
 
